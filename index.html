@@ -3,59 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>電商網站 SEO 與 URL 規劃互動指南</title>
+    <title>🚀 電商 SEO 團隊實戰指南</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Chosen Palette: Tech Minimalist (Slate, Indigo, Emerald, Rose) -->
-    <!-- Application Structure Plan: Dashboard Layout. A side navigation (top on mobile) allows users to switch between the 4 core pillars of the SEO plan. This structure transforms a linear document into an explorable tool, prioritizing task-oriented views (e.g., URL generation, Checklist tracking) over passive reading. -->
+    <!-- Chosen Palette: Modern Trust (Indigo, Emerald, Slate) -->
+    <!-- Application Structure Plan: Mission Control Dashboard. The application is structured as a multi-tab dashboard to organize the SEO plan into actionable, role-specific modules. This breaks down a dense technical document into digestible, task-oriented views (URL Builder, Tech Specs, Content Strategy, Checklist). A persistent sidebar allows easy navigation, and interactive tools within each tab encourage active learning. -->
     <!-- Visualization & Content Choices: 
-         1. URL Rule -> Goal: Demonstrate correct structure -> Method: Interactive Input/Output simulator -> Justification: Active learning is better than reading examples. -> HTML/JS.
-         2. Hreflang -> Goal: Explain page relationships -> Method: CSS Grid based visual diagram -> Justification: Visual mapping clarifies abstract code concepts. -> HTML/Tailwind.
-         3. Shopee Link -> Goal: Show code differences -> Method: Interactive Code Toggle -> Justification: Highlighting specific HTML attributes draws attention to the SEO requirement. -> HTML/JS.
-         4. Checklist -> Goal: Track readiness -> Method: Interactive Checklist + Chart.js Doughnut -> Justification: Gamifies the pre-launch process and provides immediate visual feedback. -> Chart.js/JS. 
+         1. URL Rule -> Goal: Demonstrate correct structure -> Method: Interactive Input/Output generator -> Justification: Active learning; users can type real product names to see the rule applied immediately. -> HTML/JS.
+         2. Hreflang & Bilingual -> Goal: Clarify abstract code relationships -> Method: CSS Grid cards with hover states -> Justification: Visualizing the tags as distinct interconnected "pages" makes it easier for non-technical staff to grasp. -> HTML/Tailwind/JS.
+         3. Shopee Link -> Goal: Emphasize the importance of specific HTML attributes -> Method: Interactive toggle switch linked to a code block -> Justification: Shows cause and effect (missing attribute = red warning, added attribute = green success). -> HTML/JS.
+         4. Team Checklist -> Goal: Track launch readiness by role -> Method: Interactive Checklist filtered by role + Chart.js Doughnut chart -> Justification: Provides gamified progress tracking and clarifies responsibilities. -> Chart.js/JS. 
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #334155; /* Slate 700 */
         }
 
+        /* Mandatory Chart Container Styling */
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 250px;
+            max-width: 220px;
             margin-left: auto;
             margin-right: auto;
-            height: 250px;
-            max-height: 250px;
+            height: 220px;
+            max-height: 220px;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
+        /* Custom Scrollbar for better UI */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        .nav-btn {
-            transition: all 0.2s;
-        }
+        /* Tab Navigation Animations */
+        .nav-btn { transition: all 0.2s ease-in-out; }
         .nav-btn.active {
-            background-color: #e0e7ff;
-            color: #4338ca;
-            border-left: 4px solid #4f46e5;
-            font-weight: 600;
+            background-color: #e0e7ff; /* Indigo 100 */
+            color: #4338ca; /* Indigo 700 */
+            border-left: 4px solid #4f46e5; /* Indigo 600 */
+            font-weight: bold;
         }
         @media (max-width: 768px) {
             .nav-btn.active {
@@ -64,299 +56,313 @@
             }
         }
 
+        /* Section Fade In */
         .view-section {
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.4s ease-out forwards;
         }
-        .view-section.active {
-            display: block;
-        }
-
+        .view-section.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
             right: 0;
-            bottom: 0;
-            background-color: #cbd5e1;
-            transition: .4s;
-            border-radius: 24px;
+            border-color: #10b981; /* Emerald 500 */
         }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
+        .toggle-checkbox:checked + .toggle-label {
             background-color: #10b981;
         }
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        .toggle-checkbox {
+            right: 4px;
+            z-index: 1;
+            border-color: #e2e8f0;
+            transition: all 0.3s;
+        }
+        .toggle-label {
+            background-color: #cbd5e1;
+            transition: all 0.3s;
         }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 flex-none z-10 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl">🚀</span>
-                <h1 class="text-xl font-bold text-slate-800 tracking-tight">電商網站 SEO 互動指南</h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg text-lg font-bold leading-none">SEO</div>
+                <h1 class="text-xl font-bold text-slate-800 tracking-tight">電商網站 SEO 團隊規劃</h1>
             </div>
-            <div class="hidden md:block text-sm text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full">
-                初期過渡期策略：建立品牌信任感 ✕ 累積自然流量
+            <div class="hidden md:flex items-center text-sm font-medium bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full border border-indigo-100">
+                🎯 當前目標：建立品牌信任感 ✕ 累積自然流量
             </div>
         </div>
     </header>
 
+    <!-- Main Layout -->
     <div class="flex flex-col md:flex-row flex-grow overflow-hidden max-w-7xl mx-auto w-full">
         
+        <!-- Sidebar Navigation -->
         <nav class="w-full md:w-64 flex-none bg-white border-r border-slate-200 overflow-x-auto md:overflow-y-auto">
-            <div class="p-4 flex md:flex-col gap-1 min-w-max md:min-w-0" id="navigation-menu">
-                <button onclick="switchView('view-url')" class="nav-btn active text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap">
-                    <span class="mr-2">🔗</span> 1. URL 規則與結構
+            <div class="p-4 flex md:flex-col gap-2 min-w-max md:min-w-0" id="nav-menu">
+                <p class="hidden md:block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-2 px-2">任務模組</p>
+                <button onclick="switchTab('tab-url')" class="nav-btn active text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap flex items-center gap-2">
+                    <span class="text-lg">🔗</span> 1. 網址 URL 規範
                 </button>
-                <button onclick="switchView('view-bilingual')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap">
-                    <span class="mr-2">🌐</span> 2. 雙語專屬設定
+                <button onclick="switchTab('tab-bilingual')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap flex items-center gap-2">
+                    <span class="text-lg">🌐</span> 2. 雙語網站設定
                 </button>
-                <button onclick="switchView('view-shopee')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap">
-                    <span class="mr-2">🛒</span> 3. 導向蝦皮過渡策略
+                <button onclick="switchTab('tab-shopee')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap flex items-center gap-2">
+                    <span class="text-lg">🛒</span> 3. 導向蝦皮策略
                 </button>
-                <button onclick="switchView('view-checklist')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap">
-                    <span class="mr-2">✅</span> 4. 上線前檢查清單
+                <button onclick="switchTab('tab-checklist')" class="nav-btn text-left px-4 py-3 rounded-md text-slate-600 hover:bg-slate-50 text-sm whitespace-nowrap flex items-center gap-2">
+                    <span class="text-lg">✅</span> 4. 上線檢查清單
                 </button>
             </div>
         </nav>
 
+        <!-- Main Content Area -->
         <main class="flex-grow overflow-y-auto p-4 md:p-8 bg-slate-50">
             
-            <section id="view-url" class="view-section active max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">URL 規則設定與優化</h2>
-                    <p class="text-slate-600">本區段探討如何規劃 SEO 友善的網址結構。優良的 URL 應該具備簡短、具描述性、包含關鍵字，且具有階層邏輯。透過下方的模擬器，了解如何將商品轉化為正確的 URL 格式。</p>
+            <!-- Section 1: URL Structure -->
+            <section id="tab-url" class="view-section active max-w-4xl mx-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">一、 網址 (URL) 該怎麼取？</h2>
+                    <p class="text-slate-600">好的網址就像清楚的路標，能讓 Google 和顧客一秒看懂這頁在賣什麼。這部分主要由<strong>工程團隊</strong>（設定結構）與<strong>企劃/上架人員</strong>（命名）共同負責。</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Concept Explanations -->
                     <div class="space-y-6">
                         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-slate-800 mb-2">語系目錄結構</h3>
-                            <p class="text-sm text-slate-600 mb-3">強烈建議使用<strong>子目錄 (Subdirectories)</strong> 來區分語系，而非子網域或參數。</p>
+                            <h3 class="font-bold text-slate-800 mb-2 border-l-4 border-indigo-500 pl-2">1. 語系目錄結構</h3>
+                            <p class="text-sm text-slate-600 mb-3">我們統一使用<strong>「子目錄」</strong>來區分語言，讓 SEO 權重集中在同一個網域下。</p>
                             <div class="bg-slate-50 rounded p-3 text-sm font-mono text-slate-700 border border-slate-100">
-                                繁體中文：<span class="text-indigo-600 font-bold">/zh-tw/</span><br>
-                                英文：<span class="text-indigo-600 font-bold">/en/</span>
+                                🇹🇼 中文版： <span class="text-indigo-600 font-bold">/zh-tw/</span><br>
+                                🇺🇸 英文版： <span class="text-indigo-600 font-bold">/en/</span>
                             </div>
                         </div>
 
                         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-slate-800 mb-2">商品頁 URL 命名重點</h3>
-                            <ul class="text-sm text-slate-600 space-y-2">
-                                <li class="flex items-start"><span class="text-indigo-500 mr-2">■</span> 全部小寫，避免大小寫混用。</li>
-                                <li class="flex items-start"><span class="text-indigo-500 mr-2">■</span> 使用連字號 (-) 分隔單字，禁用底線或空格。</li>
-                                <li class="flex items-start"><span class="text-indigo-500 mr-2">■</span> <strong>中文 URL 處理：</strong>即使是中文版頁面，URL 仍建議使用「英文翻譯的關鍵字」，避免複製貼上時變成冗長亂碼。</li>
-                            </ul>
+                            <h3 class="font-bold text-slate-800 mb-2 border-l-4 border-indigo-500 pl-2">2. 商品網址命名鐵則</h3>
+                            <p class="text-sm font-bold text-rose-600 mb-2">全部用小寫英文，單字之間用「連字號 (-)」隔開。</p>
+                            <div class="bg-amber-50 p-3 rounded border border-amber-200 text-sm text-amber-800 mb-3">
+                                💡 <strong>為什麼中文版也要用英文網址？</strong><br>
+                                因為中文網址在複製貼上時，會變成可怕的亂碼（如 %E8%8C...），用英文翻譯單字不僅好看，對 SEO 也最好！
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 flex flex-col">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-1">🛠️ URL 結構模擬器</h3>
-                        <p class="text-xs text-indigo-700 mb-5">輸入資訊，即時預覽 SEO 友善的網址結果。</p>
+                    <!-- Interactive URL Builder -->
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 flex flex-col h-full">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1">🛠️ 互動式 URL 產生器</h3>
+                        <p class="text-xs text-indigo-700 mb-5">請輸入商品英文名稱，看看符合規範的網址長怎樣。</p>
                         
                         <div class="space-y-4 flex-grow">
                             <div>
-                                <label class="block text-sm font-medium text-indigo-900 mb-1">選擇語系</label>
-                                <select id="url-lang" class="w-full border-indigo-200 rounded-md shadow-sm p-2 bg-white text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                                    <option value="zh-tw">繁體中文 (zh-tw)</option>
-                                    <option value="en">英文 (en)</option>
-                                </select>
+                                <label class="block text-sm font-medium text-indigo-900 mb-1">目標語系</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center text-sm">
+                                        <input type="radio" name="url-lang" value="zh-tw" checked class="mr-2 text-indigo-600 focus:ring-indigo-500" onchange="generateUrl()"> 繁體中文
+                                    </label>
+                                    <label class="flex items-center text-sm">
+                                        <input type="radio" name="url-lang" value="en" class="mr-2 text-indigo-600 focus:ring-indigo-500" onchange="generateUrl()"> 英文
+                                    </label>
+                                </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-indigo-900 mb-1">商品英文關鍵字</label>
-                                <input type="text" id="url-input" placeholder="e.g., Handcrafted Ceramic Teapot" class="w-full border-indigo-200 rounded-md shadow-sm p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none" value="Handcrafted Ceramic Teapot">
+                                <label class="block text-sm font-medium text-indigo-900 mb-1">商品英文名稱</label>
+                                <input type="text" id="url-input" placeholder="例如: Handcrafted Ceramic Teapot" class="w-full border-indigo-200 rounded-md shadow-sm p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none" value="Handcrafted Ceramic Teapot" oninput="generateUrl()">
                             </div>
                         </div>
 
                         <div class="mt-6">
-                            <p class="text-sm font-bold text-emerald-700 mb-1">✅ 最佳實踐 (SEO 友善)：</p>
+                            <p class="text-sm font-bold text-emerald-700 mb-1">✅ 完美示範 (清楚的關鍵字)：</p>
                             <div id="url-output" class="bg-white border border-emerald-300 text-emerald-800 p-3 rounded font-mono text-sm break-all shadow-inner">
-                                https://www.yourdomain.com/zh-tw/product/handcrafted-ceramic-teapot
+                                www.yourdomain.com/zh-tw/product/handcrafted-ceramic-teapot
                             </div>
                             
-                            <p class="text-sm font-bold text-rose-700 mb-1 mt-4">❌ 錯誤示範 (無意義 ID)：</p>
-                            <div class="bg-white border border-rose-300 text-rose-600 p-3 rounded font-mono text-sm break-all shadow-inner">
-                                https://www.yourdomain.com/zh-tw/product/item?id=12345
+                            <p class="text-sm font-bold text-rose-700 mb-1 mt-4">❌ 錯誤示範 (無意義的亂碼)：</p>
+                            <div class="bg-white border border-rose-300 text-rose-600 p-3 rounded font-mono text-sm break-all shadow-inner opacity-60">
+                                www.yourdomain.com/zh-tw/product/item?id=12345
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="view-bilingual" class="view-section max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">雙語網站專屬 SEO 設定</h2>
-                    <p class="text-slate-600">多語系網站最重要的設定是告訴 Google 哪個頁面是對應哪個語言與地區，避免被判定為「重複內容」。本區段視覺化呈現 Hreflang 標籤的關聯性與 Meta Data 翻譯原則。</p>
+            <!-- Section 2: Bilingual -->
+            <section id="tab-bilingual" class="view-section max-w-4xl mx-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">二、 雙語網站的必備設定</h2>
+                    <p class="text-slate-600">為了避免 Google 覺得我們在「重複貼文」，必須清楚標示頁面語言。內容團隊也必須確實進行人工翻譯。</p>
                 </div>
 
                 <div class="space-y-6">
+                    <!-- Hreflang Section -->
                     <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4">1. 實作 Hreflang 標籤關聯圖</h3>
-                        <p class="text-sm text-slate-600 mb-6">點擊下方按鈕，查看對應頁面的 HTML <code>&lt;head&gt;</code> 標籤應如何設定。</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-slate-800 border-l-4 border-indigo-500 pl-2">1. 告訴 Google 誰是誰 (Hreflang 標籤)</h3>
+                            <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">工程團隊注意</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-6">工程師需要在網頁後台 <code>&lt;head&gt;</code> 中加入以下標籤，建立語言對應關係：</p>
                         
-                        <div class="flex flex-wrap gap-2 mb-6 justify-center">
-                            <button onclick="highlightHreflang('all')" class="px-4 py-2 bg-slate-800 text-white text-sm rounded-md font-medium">顯示全部關聯</button>
-                            <button onclick="highlightHreflang('tw')" class="px-4 py-2 bg-blue-100 text-blue-800 text-sm rounded-md font-medium hover:bg-blue-200">繁體中文頁面</button>
-                            <button onclick="highlightHreflang('en')" class="px-4 py-2 bg-amber-100 text-amber-800 text-sm rounded-md font-medium hover:bg-amber-200">英文頁面</button>
-                            <button onclick="highlightHreflang('def')" class="px-4 py-2 bg-emerald-100 text-emerald-800 text-sm rounded-md font-medium hover:bg-emerald-200">預設頁面 (x-default)</button>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                            <div id="box-tw" class="border-2 border-blue-200 bg-blue-50 p-4 rounded-lg transition-all duration-300">
-                                <span class="text-3xl">🇹🇼</span>
-                                <h4 class="font-bold text-blue-900 mt-2">繁體中文頁面</h4>
-                                <p class="text-xs text-blue-700 mt-1 font-mono">hreflang="zh-TW"</p>
+                        <!-- Visual Mapping -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="border-2 border-blue-200 bg-blue-50 p-4 rounded-lg text-center hover:shadow-md transition">
+                                <span class="text-3xl block mb-2">🇹🇼</span>
+                                <h4 class="font-bold text-blue-900 text-sm">中文版頁面</h4>
+                                <p class="text-xs text-blue-700 mt-1 font-mono bg-white inline-block px-2 py-1 rounded border border-blue-100">hreflang="zh-TW"</p>
                             </div>
-                            <div id="box-en" class="border-2 border-amber-200 bg-amber-50 p-4 rounded-lg transition-all duration-300">
-                                <span class="text-3xl">🇺🇸</span>
-                                <h4 class="font-bold text-amber-900 mt-2">英文頁面</h4>
-                                <p class="text-xs text-amber-700 mt-1 font-mono">hreflang="en"</p>
+                            <div class="border-2 border-amber-200 bg-amber-50 p-4 rounded-lg text-center hover:shadow-md transition">
+                                <span class="text-3xl block mb-2">🇺🇸</span>
+                                <h4 class="font-bold text-amber-900 text-sm">英文版頁面</h4>
+                                <p class="text-xs text-amber-700 mt-1 font-mono bg-white inline-block px-2 py-1 rounded border border-amber-100">hreflang="en"</p>
                             </div>
-                            <div id="box-def" class="border-2 border-emerald-200 bg-emerald-50 p-4 rounded-lg transition-all duration-300">
-                                <span class="text-3xl">🌐</span>
-                                <h4 class="font-bold text-emerald-900 mt-2">未匹配預設頁面</h4>
-                                <p class="text-xs text-emerald-700 mt-1 font-mono">hreflang="x-default"</p>
+                            <div class="border-2 border-emerald-200 bg-emerald-50 p-4 rounded-lg text-center hover:shadow-md transition relative">
+                                <span class="absolute -top-3 -right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">預設 Fallback</span>
+                                <span class="text-3xl block mb-2">🌐</span>
+                                <h4 class="font-bold text-emerald-900 text-sm">未符合時預設 (帶往中文)</h4>
+                                <p class="text-xs text-emerald-700 mt-1 font-mono bg-white inline-block px-2 py-1 rounded border border-emerald-100">hreflang="x-default"</p>
                             </div>
                         </div>
 
-                        <div class="bg-slate-900 text-slate-300 p-4 rounded-lg mt-6 font-mono text-sm overflow-x-auto">
-<pre><code id="code-hreflang">&lt;link rel="alternate" hreflang="zh-TW" href="https://.../zh-tw/product/teapot" /&gt;
-&lt;link rel="alternate" hreflang="en" href="https://.../en/product/teapot" /&gt;
-&lt;link rel="alternate" hreflang="x-default" href="https://.../zh-tw/product/teapot" /&gt;</code></pre>
+                        <div class="bg-slate-800 text-emerald-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+&lt;!-- 工程師請將這段加入網頁 &lt;head&gt; 中 --&gt;<br>
+&lt;link rel="alternate" hreflang="<span class="text-blue-300">zh-TW</span>" href="https://.../zh-tw/product/teapot" /&gt;<br>
+&lt;link rel="alternate" hreflang="<span class="text-amber-300">en</span>" href="https://.../en/product/teapot" /&gt;<br>
+&lt;link rel="alternate" hreflang="<span class="text-emerald-300">x-default</span>" href="https://.../zh-tw/product/teapot" /&gt;
                         </div>
                     </div>
 
+                    <!-- Meta Data Section -->
                     <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                        <h3 class="text-lg font-bold text-slate-800 mb-3">2. 獨立的 Meta Data</h3>
-                        <p class="text-sm text-slate-600 mb-4">英文版與中文版必須有各自獨立的 Title、Meta Description。<strong>務必由人工翻譯或校對，不要直接依賴機器翻譯。</strong></p>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-slate-800 border-l-4 border-indigo-500 pl-2">2. 標題與描述 (Title & Meta Description)</h3>
+                            <span class="text-xs bg-pink-100 text-pink-700 px-2 py-1 rounded">行銷/內容團隊注意</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">中文版和英文版必須<strong>各自獨立填寫</strong>。請務必人工翻譯，不要直接丟 Google 翻譯，語意通順的標題才會吸引客人點擊！</p>
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-xs font-bold mb-2 inline-block">zh-TW</span>
-                                <p class="font-bold text-slate-800 text-sm">手工陶瓷側把茶壺 | 鶯歌職人製造 - 品牌名</p>
-                                <p class="text-xs text-slate-500 mt-2">探索充滿溫度的手工藝品，為您的日常生活增添獨特的品味與質感。</p>
+                            <div class="border border-slate-200 p-4 rounded bg-slate-50">
+                                <span class="text-xs font-bold text-slate-500 uppercase">Title (中文)</span>
+                                <p class="font-bold text-slate-800 mt-1">手工陶瓷側把茶壺 | 鶯歌職人製造 - 品牌名</p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-xs font-bold mb-2 inline-block">en</span>
-                                <p class="font-bold text-slate-800 text-sm">Handcrafted Ceramic Teapot | Artisan Made - Brand</p>
-                                <p class="text-xs text-slate-500 mt-2">Discover handcrafted pieces that bring warmth and character to your everyday life.</p>
+                            <div class="border border-slate-200 p-4 rounded bg-slate-50">
+                                <span class="text-xs font-bold text-slate-500 uppercase">Title (English)</span>
+                                <p class="font-bold text-slate-800 mt-1">Handcrafted Ceramic Teapot | Artisan Made - Brand</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="view-shopee" class="view-section max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">導向蝦皮 (Shopee) 的過渡期 SEO 策略</h2>
-                    <p class="text-slate-600">把流量導出去會不會影響 SEO？其實只要做法正確，將蝦皮做成 CTA，反而能提早佈局官網權重。本區段展示內容獨特性與外部連結安全防護機制。</p>
+            <!-- Section 3: Shopee Funnel -->
+            <section id="tab-shopee" class="view-section max-w-4xl mx-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">三、 導向蝦皮 (Shopee) 策略</h2>
+                    <p class="text-slate-600">把「前往蝦皮」當作一個強而有力的 CTA (行動呼籲按鈕)。只要做法正確，不會影響官網 SEO，反而能提早卡位！</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="space-y-6">
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-slate-800 mb-3">1. 官網內容必須「獨一無二」</h3>
-                            <div class="bg-rose-50 border-l-4 border-rose-500 p-3 mb-3">
-                                <p class="font-bold text-rose-800 text-sm">⚠️ 致命錯誤</p>
-                                <p class="text-rose-700 text-xs mt-1">將蝦皮上的商品描述一字不漏複製到官網。</p>
-                            </div>
-                            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-3">
-                                <p class="font-bold text-emerald-800 text-sm">✅ 正確做法</p>
-                                <p class="text-emerald-700 text-xs mt-1">官網的商品描述必須比蝦皮更豐富、更有質感。撰寫品牌故事、設計理念、使用情境、高畫質情境照。讓 Google 認為「官網是這個商品的權威資料來源」，搜尋關鍵字時官網才會排在蝦皮前面。</p>
-                            </div>
-                        </div>
+                    <!-- Content Rules -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                        <h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-indigo-500 pl-2">1. 內容必須「獨一無二」</h3>
                         
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-slate-800 mb-2">2. 外部連結屬性 (Outbound Links)</h3>
-                            <p class="text-sm text-slate-600 mb-3">「前往蝦皮購買」按鈕本質上是外部連結。必須在 <code>&lt;a&gt;</code> 標籤加上防護屬性。</p>
-                            <ul class="text-sm text-slate-600 space-y-2">
-                                <li><code class="bg-slate-100 text-indigo-600 px-1 rounded">target="_blank"</code>：開新分頁，保留官網降低跳出率。</li>
-                                <li><code class="bg-slate-100 text-indigo-600 px-1 rounded">rel="noopener noreferrer"</code>：保護網站安全，不傳遞過多權重給蝦皮。</li>
-                            </ul>
+                        <div class="space-y-4">
+                            <div class="bg-rose-50 border border-rose-200 p-4 rounded-lg flex items-start gap-3">
+                                <span class="text-xl">❌</span>
+                                <div>
+                                    <h4 class="font-bold text-rose-800 text-sm">絕對不要</h4>
+                                    <p class="text-rose-700 text-sm mt-1">把蝦皮上面的商品描述「一字不漏」複製貼上到官網。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg flex items-start gap-3">
+                                <span class="text-xl">✅</span>
+                                <div>
+                                    <h4 class="font-bold text-emerald-800 text-sm">我們該做的</h4>
+                                    <p class="text-emerald-700 text-sm mt-1">加入<strong>品牌故事、設計理念、情境圖</strong>。</p>
+                                    <p class="text-emerald-600 text-xs mt-2 bg-emerald-100 p-2 rounded">
+                                        <strong>目標：</strong>讓 Google 覺得「我們的官網才是這個商品最完整、最權威的介紹地」，搜尋時官網才會排在蝦皮前面！
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-bold text-white">連結屬性防護模擬器</h3>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs text-slate-400">一般連結</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="link-toggle" checked onchange="toggleLinkProtection()">
-                                    <span class="slider"></span>
-                                </label>
-                                <span class="text-xs text-emerald-400 font-bold">SEO 防護連結</span>
-                            </div>
+                    <!-- Technical Rules (Interactive) -->
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold border-l-4 border-indigo-400 pl-2">2. 按鈕的安全防護</h3>
+                            <span class="text-xs bg-slate-600 text-slate-200 px-2 py-1 rounded">工程團隊注意</span>
                         </div>
                         
-                        <div class="bg-slate-900 p-4 rounded border border-slate-700 font-mono text-sm break-all h-36 flex flex-col justify-center">
-                            <div class="text-slate-300">&lt;a href="https://shopee.tw/your-store/item-id"</div>
-                            <div id="code-target" class="text-emerald-400 font-bold pl-4 transition-opacity duration-300">target="_blank"</div>
-                            <div id="code-rel" class="text-emerald-400 font-bold pl-4 transition-opacity duration-300">rel="noopener noreferrer"&gt;</div>
-                            <div id="code-rel-disabled" class="text-slate-300 pl-4 hidden">&gt;</div>
-                            <div class="text-slate-300 pl-4">在蝦皮購物購買 (Buy on Shopee)</div>
+                        <p class="text-sm text-slate-300 mb-4">在「前往蝦皮購買」的按鈕程式碼上，一定要加上這兩個屬性，保護我們的網站權重不流失：</p>
+
+                        <!-- Toggle -->
+                        <div class="flex items-center justify-center gap-3 mb-6 bg-slate-900 p-3 rounded-lg">
+                            <span class="text-sm text-slate-400">一般連結</span>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="link-protect-toggle" checked onchange="toggleCodeProtection()" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                <label for="link-protect-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                            </div>
+                            <span class="text-sm font-bold text-emerald-400">SEO 防護啟用</span>
+                        </div>
+
+                        <!-- Code Block -->
+                        <div class="bg-black p-4 rounded border border-slate-700 font-mono text-sm break-all h-32 flex flex-col justify-center">
+                            <div class="text-slate-300">&lt;a href="https://shopee.tw/your-store"</div>
+                            <div id="attr-target" class="text-emerald-400 font-bold pl-4 transition-all duration-300">target="_blank"</div>
+                            <div id="attr-rel" class="text-emerald-400 font-bold pl-4 transition-all duration-300">rel="noopener noreferrer"&gt;</div>
+                            <div id="attr-close-bad" class="text-slate-300 pl-4 hidden">&gt;</div>
+                            <div class="text-slate-300 pl-4">前往蝦皮安心結帳</div>
                             <div class="text-slate-300">&lt;/a&gt;</div>
                         </div>
 
-                        <div id="link-status" class="mt-4 text-center text-sm font-medium text-emerald-400 bg-emerald-400/10 py-2 rounded">
-                            狀態：已套用安全屬性，防止權重流失。
+                        <!-- Explanations -->
+                        <div class="mt-4 text-xs space-y-2 text-slate-300 min-h-[60px]" id="protection-desc">
+                            <p><span class="text-emerald-400 font-bold">target="_blank"</span>: 讓蝦皮在新分頁打開，客人原本的網頁還停留在官網，降低跳出率！</p>
+                            <p><span class="text-emerald-400 font-bold">rel="noopener noreferrer"</span>: SEO 防護罩，不把好不容易累積的權重免費送給蝦皮。</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="view-checklist" class="view-section max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">網站上線前 SEO 檢查清單</h2>
-                    <p class="text-slate-600">請在網站正式公開前，確認以下核心 SEO 基礎建設。點擊清單項目來追蹤準備進度，並透過右側圖表檢視整體完成度。</p>
+            <!-- Section 4: Checklist -->
+            <section id="tab-checklist" class="view-section max-w-4xl mx-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">四、 網站上線前 Check-list</h2>
+                    <p class="text-slate-600">準備上線了嗎？請各團隊依照角色分工確認以下任務。點擊完成打勾，檢視整體團隊進度。</p>
                 </div>
 
                 <div class="flex flex-col lg:flex-row gap-6">
-                    <div class="w-full lg:w-3/5 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                        <div class="bg-slate-50 border-b border-slate-200 px-4 py-3">
-                            <h3 class="font-bold text-slate-800">執行任務清單</h3>
+                    <!-- Task List -->
+                    <div class="w-full lg:w-2/3 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+                        <!-- Filters -->
+                        <div class="bg-slate-50 border-b border-slate-200 px-4 py-3 flex gap-2 overflow-x-auto">
+                            <button onclick="filterTasks('all')" id="filter-all" class="px-3 py-1 text-sm rounded-full bg-slate-800 text-white font-medium whitespace-nowrap">全部任務</button>
+                            <button onclick="filterTasks('marketing')" id="filter-marketing" class="px-3 py-1 text-sm rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 whitespace-nowrap">📝 行銷/內容/設計</button>
+                            <button onclick="filterTasks('engineering')" id="filter-engineering" class="px-3 py-1 text-sm rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 whitespace-nowrap">💻 工程/IT</button>
                         </div>
-                        <ul class="divide-y divide-slate-100" id="task-list">
+                        
+                        <ul class="divide-y divide-slate-100 flex-grow overflow-y-auto max-h-[400px]" id="task-list">
+                            <!-- Tasks populated by JS -->
                         </ul>
                     </div>
 
-                    <div class="w-full lg:w-2/5 bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center">
-                        <h3 class="font-bold text-slate-800 mb-4">上線準備進度</h3>
+                    <!-- Chart & Status -->
+                    <div class="w-full lg:w-1/3 bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center">
+                        <h3 class="font-bold text-slate-800 mb-4">團隊準備進度</h3>
                         <div class="chart-container">
-                            <canvas id="seoChart"></canvas>
+                            <canvas id="progressChart"></canvas>
                         </div>
-                        <div class="mt-4 text-center">
-                            <span id="chart-percentage" class="text-3xl font-bold text-indigo-600">0%</span>
-                            <p id="chart-status" class="text-sm text-slate-500 mt-1">尚有任務待完成</p>
+                        <div class="mt-6 text-center">
+                            <span id="chart-percent" class="text-4xl font-bold text-indigo-600">0%</span>
+                            <p id="chart-msg" class="text-sm text-slate-500 mt-2 font-medium bg-slate-100 px-3 py-1 rounded-full">一起把任務清空吧！</p>
                         </div>
                     </div>
                 </div>
@@ -365,118 +371,141 @@
         </main>
     </div>
 
+    <!-- JavaScript Logic -->
     <script>
-        const appState = {
-            currentView: 'view-url',
-            checklist: [
-                { id: 't1', done: false, title: '結構化資料 (Schema Markup)', desc: '在商品頁加入 Product 結構化資料，標示名稱、圖片、價格，讓 Google 搜尋結果出現豐富複合狀摘要 (Rich Snippets)。' },
-                { id: 't2', done: false, title: '圖片 SEO 最佳化', desc: '所有商品圖片必須壓縮過 (建議 WebP 格式)，且務必填寫 alt 屬性（如：alt="鶯歌手工陶瓷茶壺 正面照"）。' },
-                { id: 't3', done: false, title: 'Title & Description 設定', desc: 'Title 格式：[商品名稱] | [副標/特點] - [品牌名稱] (中文控制在25-30字)。Description 需包含核心關鍵字與行動呼籲 (CTA)。' },
-                { id: 't4', done: false, title: 'Google 工具綁定', desc: '上線第一天立刻提交 XML Sitemap 給 Google Search Console，並安裝 GA4 以追蹤點擊「前往蝦皮」按鈕的轉換次數。' }
-            ],
-            chartInstance: null
-        };
-
-        function switchView(viewId) {
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             
-            document.getElementById(viewId).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
-            appState.currentView = viewId;
         }
 
+        // --- URL Generator Logic ---
         function generateUrl() {
-            const lang = document.getElementById('url-lang').value;
-            let keyword = document.getElementById('url-input').value.trim().toLowerCase();
-            keyword = keyword.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            if(!keyword) keyword = 'product-name';
-            
-            document.getElementById('url-output').textContent = `https://www.yourdomain.com/${lang}/product/${keyword}`;
-        }
-        document.getElementById('url-lang').addEventListener('change', generateUrl);
-        document.getElementById('url-input').addEventListener('input', generateUrl);
-
-        function highlightHreflang(type) {
-            const boxes = ['tw', 'en', 'def'];
-            boxes.forEach(b => {
-                document.getElementById(`box-${b}`).style.opacity = (type === 'all' || type === b) ? '1' : '0.3';
-                document.getElementById(`box-${b}`).style.transform = (type === b) ? 'scale(1.05)' : 'scale(1)';
-            });
-
-            const codeBlock = document.getElementById('code-hreflang');
-            let codeHtml = `&lt;link rel="alternate" hreflang="zh-TW" href="https://.../zh-tw/product/teapot" /&gt;\n&lt;link rel="alternate" hreflang="en" href="https://.../en/product/teapot" /&gt;\n&lt;link rel="alternate" hreflang="x-default" href="https://.../zh-tw/product/teapot" /&gt;`;
-            
-            if (type !== 'all') {
-                const lines = codeHtml.split('\n');
-                const index = type === 'tw' ? 0 : (type === 'en' ? 1 : 2);
-                lines[index] = `<span class="bg-indigo-900 text-white font-bold px-1 rounded">${lines[index]}</span>`;
-                codeHtml = lines.join('\n');
+            const langRadios = document.getElementsByName('url-lang');
+            let selectedLang = 'zh-tw';
+            for (let radio of langRadios) {
+                if (radio.checked) selectedLang = radio.value;
             }
-            codeBlock.innerHTML = codeHtml;
+
+            let input = document.getElementById('url-input').value.trim().toLowerCase();
+            // Replace spaces and special characters with hyphens
+            let formatted = input.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            if (!formatted) formatted = 'product-name';
+
+            document.getElementById('url-output').textContent = `www.yourdomain.com/${selectedLang}/product/${formatted}`;
         }
 
-        function toggleLinkProtection() {
-            const isProtected = document.getElementById('link-toggle').checked;
-            const target = document.getElementById('code-target');
-            const rel = document.getElementById('code-rel');
-            const relDisabled = document.getElementById('code-rel-disabled');
-            const status = document.getElementById('link-status');
+        // --- Shopee Code Toggle Logic ---
+        function toggleCodeProtection() {
+            const isProtected = document.getElementById('link-protect-toggle').checked;
+            const target = document.getElementById('attr-target');
+            const rel = document.getElementById('attr-rel');
+            const closeBad = document.getElementById('attr-close-bad');
+            const desc = document.getElementById('protection-desc');
 
             if (isProtected) {
                 target.style.display = 'block';
                 rel.style.display = 'block';
-                relDisabled.style.display = 'none';
-                status.textContent = '狀態：已套用安全屬性，防止權重流失。';
-                status.className = 'mt-4 text-center text-sm font-medium text-emerald-400 bg-emerald-400/10 py-2 rounded';
+                closeBad.style.display = 'none';
+                desc.innerHTML = `
+                    <p><span class="text-emerald-400 font-bold">target="_blank"</span>: 讓蝦皮在新分頁打開，客人原本的網頁還停留在官網，降低跳出率！</p>
+                    <p><span class="text-emerald-400 font-bold">rel="noopener noreferrer"</span>: SEO 防護罩，不把好不容易累積的權重免費送給蝦皮。</p>
+                `;
             } else {
                 target.style.display = 'none';
                 rel.style.display = 'none';
-                relDisabled.style.display = 'block';
-                status.textContent = '警告：缺少防護屬性，使用者將跳離網站，且傳遞過多權重給外部。';
-                status.className = 'mt-4 text-center text-sm font-medium text-rose-400 bg-rose-400/10 py-2 rounded';
+                closeBad.style.display = 'block';
+                desc.innerHTML = `
+                    <p class="text-rose-400 font-bold">⚠️ 警告：缺少防護設定</p>
+                    <p class="text-rose-300">點擊後會覆蓋掉我們的官網，且免費傳遞 SEO 權重給外部網站，對我們非常不利。</p>
+                `;
             }
         }
 
-        function renderChecklist() {
+        // --- Checklist & Chart Data ---
+        const tasks = [
+            { id: 1, role: 'marketing', done: false, title: '圖片 SEO：檔案壓縮', desc: '所有商品圖片是否已壓縮（建議 WebP 格式），讓網頁跑得快？' },
+            { id: 2, role: 'marketing', done: false, title: '圖片 SEO：Alt 屬性', desc: '圖片上傳時，是否有填寫描述？（例如：alt="鶯歌手工陶瓷側把茶壺 正面照"）' },
+            { id: 3, role: 'marketing', done: false, title: '吸睛標題 (Title)', desc: 'Title 格式有統一嗎？ 👉 [商品名稱] | [副標/特點] - [品牌名稱] (中文 30 字內)。' },
+            { id: 4, role: 'marketing', done: false, title: '吸引描述 (Description)', desc: 'Description 有寫出商品亮點和促使點擊的文字嗎？' },
+            { id: 5, role: 'engineering', done: false, title: '結構化資料 (Schema)', desc: '商品頁是否有埋設 Product 結構化資料？（標示名稱、圖片、價格），讓搜尋結果更豐富。' },
+            { id: 6, role: 'engineering', done: false, title: 'Sitemap 提交', desc: '是否已將 Sitemap 提交給 Google Search Console？' },
+            { id: 7, role: 'engineering', done: false, title: 'GA4 轉換追蹤', desc: '是否已埋設 GA4，並且設定好追蹤「點擊前往蝦皮」按鈕的轉換次數？' }
+        ];
+
+        let currentFilter = 'all';
+        let progressChart = null;
+
+        function renderTaskList() {
             const listEl = document.getElementById('task-list');
             listEl.innerHTML = '';
-            
-            appState.checklist.forEach((task, index) => {
+
+            const filteredTasks = tasks.filter(t => currentFilter === 'all' || t.role === currentFilter);
+
+            filteredTasks.forEach(task => {
                 const li = document.createElement('li');
-                li.className = `p-4 hover:bg-slate-50 cursor-pointer transition-colors ${task.done ? 'bg-slate-50' : ''}`;
-                li.onclick = () => toggleTask(index);
-                
+                li.className = `p-4 hover:bg-slate-50 cursor-pointer transition-colors flex items-start gap-3 ${task.done ? 'bg-slate-50 opacity-80' : ''}`;
+                li.onclick = () => toggleTaskDone(task.id);
+
+                const roleBadge = task.role === 'marketing' 
+                    ? '<span class="text-[10px] bg-pink-100 text-pink-700 px-1.5 py-0.5 rounded ml-2 align-middle">📝 行銷</span>'
+                    : '<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded ml-2 align-middle">💻 工程</span>';
+
                 li.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="mt-0.5 flex-shrink-0 w-5 h-5 rounded border ${task.done ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white'} flex items-center justify-center text-xs transition-colors">
-                            ${task.done ? '✓' : ''}
+                    <div class="mt-0.5 flex-shrink-0">
+                        <div class="w-5 h-5 rounded border-2 ${task.done ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300 bg-white'} flex items-center justify-center transition-colors">
+                            ${task.done ? '<span class="text-white text-xs">✓</span>' : ''}
                         </div>
-                        <div>
-                            <h4 class="text-sm font-bold ${task.done ? 'text-slate-400 line-through' : 'text-slate-800'} transition-colors">${task.title}</h4>
-                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">${task.desc}</p>
-                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold ${task.done ? 'text-slate-400 line-through' : 'text-slate-800'} transition-colors">
+                            ${task.title} ${roleBadge}
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed ${task.done ? 'line-through opacity-70' : ''}">${task.desc}</p>
                     </div>
                 `;
                 listEl.appendChild(li);
             });
-            updateChart();
         }
 
-        function toggleTask(index) {
-            appState.checklist[index].done = !appState.checklist[index].done;
-            renderChecklist();
+        function toggleTaskDone(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                renderTaskList();
+                updateChart();
+            }
+        }
+
+        function filterTasks(role) {
+            currentFilter = role;
+            
+            // Update filter button styles
+            const btns = ['all', 'marketing', 'engineering'];
+            btns.forEach(b => {
+                const el = document.getElementById(`filter-${b}`);
+                if (b === role) {
+                    el.className = "px-3 py-1 text-sm rounded-full bg-slate-800 text-white font-medium whitespace-nowrap";
+                } else {
+                    el.className = "px-3 py-1 text-sm rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 whitespace-nowrap";
+                }
+            });
+
+            renderTaskList();
         }
 
         function initChart() {
-            const ctx = document.getElementById('seoChart').getContext('2d');
-            appState.chartInstance = new Chart(ctx, {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            progressChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['已完成', '待完成'],
+                    labels: ['已完成', '待辦事項'],
                     datasets: [{
-                        data: [0, 4],
-                        backgroundColor: ['#4f46e5', '#e2e8f0'],
+                        data: [0, tasks.length],
+                        backgroundColor: ['#4f46e5', '#e2e8f0'], // Indigo 600, Slate 200
                         borderWidth: 0,
                         hoverOffset: 4
                     }]
@@ -496,39 +525,42 @@
                     animation: { animateScale: true }
                 }
             });
+            updateChart();
         }
 
         function updateChart() {
-            const completed = appState.checklist.filter(t => t.done).length;
-            const total = appState.checklist.length;
-            const remaining = total - completed;
+            const completed = tasks.filter(t => t.done).length;
+            const total = tasks.length;
             const pct = Math.round((completed / total) * 100);
 
-            if(appState.chartInstance) {
-                appState.chartInstance.data.datasets[0].data = [completed, remaining];
-                appState.chartInstance.data.datasets[0].backgroundColor[0] = pct === 100 ? '#10b981' : '#4f46e5';
-                appState.chartInstance.update();
+            if (progressChart) {
+                progressChart.data.datasets[0].data = [completed, total - completed];
+                // Turn green if 100%
+                progressChart.data.datasets[0].backgroundColor[0] = pct === 100 ? '#10b981' : '#4f46e5';
+                progressChart.update();
             }
 
-            const pctEl = document.getElementById('chart-percentage');
-            const statusEl = document.getElementById('chart-status');
+            const pctEl = document.getElementById('chart-percent');
+            const msgEl = document.getElementById('chart-msg');
+            
             pctEl.textContent = `${pct}%`;
             
             if (pct === 100) {
                 pctEl.classList.replace('text-indigo-600', 'text-emerald-600');
-                statusEl.textContent = '✅ 準備就緒，可以上線！';
-                statusEl.classList.add('text-emerald-600', 'font-bold');
+                msgEl.textContent = '🎉 太棒了！網站隨時可以上線！';
+                msgEl.className = 'text-sm text-emerald-700 mt-2 font-bold bg-emerald-100 px-3 py-1 rounded-full';
             } else {
                 pctEl.classList.replace('text-emerald-600', 'text-indigo-600');
-                statusEl.textContent = '尚有任務待完成';
-                statusEl.classList.remove('text-emerald-600', 'font-bold');
+                msgEl.textContent = '一起把任務清空吧！';
+                msgEl.className = 'text-sm text-slate-500 mt-2 font-medium bg-slate-100 px-3 py-1 rounded-full';
             }
         }
 
+        // Initialize App
         window.onload = () => {
             generateUrl();
+            renderTaskList();
             initChart();
-            renderChecklist();
         };
     </script>
 </body>
