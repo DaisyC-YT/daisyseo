@@ -1,0 +1,314 @@
+import React, { useState } from 'react';
+import { ShoppingBag, Globe, Menu, X, ExternalLink, ChevronRight } from 'lucide-react';
+
+// --- i18n Dictionary ---
+const translations = {
+  en: {
+    navHome: "Home",
+    navShop: "Shop",
+    navAbout: "About Us",
+    heroTitle: "Artisan Crafted Lifestyle",
+    heroSub: "Discover handcrafted pieces that bring warmth and character to your everyday life.",
+    buyOnShopee: "Buy on Shopee",
+    pricePrefix: "$",
+    mockBadge: "Coming Soon",
+    realBadge: "Available",
+    footerText: "© 2026 Your Brand Name. All rights reserved.",
+    seoNote: "Secure checkout will be available soon. For now, we partner with Shopee for safe transactions."
+  },
+  zh: {
+    navHome: "首頁",
+    navShop: "所有商品",
+    navAbout: "關於我們",
+    heroTitle: "職人手作的溫潤日常",
+    heroSub: "探索充滿溫度的手工藝品，為您的日常生活增添獨特的品味與質感。",
+    buyOnShopee: "前往蝦皮購買",
+    pricePrefix: "NT$ ",
+    mockBadge: "即將推出",
+    realBadge: "現貨供應",
+    footerText: "© 2026 您的品牌名稱。保留一切權利。",
+    seoNote: "官方金流即將上線！目前過渡期間，我們委託蝦皮購物提供您最安全、便利的結帳服務。"
+  }
+};
+
+// --- Product Data (6 Real + 4 Mocks) ---
+const products = [
+  // 6 Real Products
+  {
+    id: 'p1',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/', // Replace with actual URL
+    en: { name: "Handcrafted Ceramic Teapot", category: "Teaware" },
+    zh: { name: "手工陶瓷側把茶壺", category: "茶具" },
+    price: 1280,
+    img: "https://images.unsplash.com/photo-1594911762283-79eaf69c9b14?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  {
+    id: 'p2',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/',
+    en: { name: "Minimalist Stoneware Mug", category: "Drinkware" },
+    zh: { name: "極簡風粗陶馬克杯", category: "杯具" },
+    price: 450,
+    img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  {
+    id: 'p3',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/',
+    en: { name: "Pour-Over Coffee Dripper", category: "Coffee" },
+    zh: { name: "職人手作咖啡濾杯", category: "咖啡器具" },
+    price: 890,
+    img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  {
+    id: 'p4',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/',
+    en: { name: "Glazed Dining Plate Set", category: "Tableware" },
+    zh: { name: "復古窯變釉餐盤組", category: "餐具" },
+    price: 1560,
+    img: "https://images.unsplash.com/photo-1620072652684-2391264c9bb2?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  {
+    id: 'p5',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/',
+    en: { name: "Japanese Matcha Bowl", category: "Teaware" },
+    zh: { name: "日式傳統志野燒抹茶碗", category: "茶具" },
+    price: 2200,
+    img: "https://images.unsplash.com/photo-1582216894086-6ba1c7dc7c2e?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  {
+    id: 'p6',
+    isReal: true,
+    shopeeUrl: 'https://shopee.tw/',
+    en: { name: "Decorative Zen Vase", category: "Decor" },
+    zh: { name: "禪意粗陶花瓶", category: "家飾" },
+    price: 1850,
+    img: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&q=80&w=600&h=600"
+  },
+  // Mock Products to fill the grid
+  {
+    id: 'm1',
+    isReal: false,
+    en: { name: "Spring Collection Preview", category: "Coming Soon" },
+    zh: { name: "春季新品預覽 (假商品)", category: "即將推出" },
+    price: 0,
+    img: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&q=80&w=600&h=600&blur=20"
+  },
+  {
+    id: 'm2',
+    isReal: false,
+    en: { name: "Summer Collection Preview", category: "Coming Soon" },
+    zh: { name: "夏季新品預覽 (假商品)", category: "即將推出" },
+    price: 0,
+    img: "https://images.unsplash.com/photo-1590211516766-07613ba2225e?auto=format&fit=crop&q=80&w=600&h=600&blur=20"
+  }
+];
+
+export default function App() {
+  const [lang, setLang] = useState('zh'); // 'en' or 'zh'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = translations[lang];
+
+  const toggleLang = () => {
+    setLang(lang === 'zh' ? 'en' : 'zh');
+  };
+
+  return (
+    <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
+      {/* Navigation Bar */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0 flex items-center cursor-pointer">
+              <ShoppingBag className="h-6 w-6 text-stone-700 mr-2" />
+              <span className="font-bold text-xl tracking-wider text-stone-800">CRAFTED</span>
+            </div>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#" className="text-neutral-600 hover:text-stone-900 transition-colors">{t.navHome}</a>
+              <a href="#shop" className="text-neutral-600 hover:text-stone-900 transition-colors">{t.navShop}</a>
+              <a href="#about" className="text-neutral-600 hover:text-stone-900 transition-colors">{t.navAbout}</a>
+              
+              {/* Language Switcher */}
+              <button 
+                onClick={toggleLang}
+                className="flex items-center space-x-1 text-sm font-medium text-stone-600 hover:text-stone-900 bg-stone-100 px-3 py-1.5 rounded-full transition-colors"
+              >
+                <Globe className="h-4 w-4" />
+                <span>{lang === 'zh' ? 'EN' : '中文'}</span>
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center">
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-neutral-600">
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Nav */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-b border-neutral-200 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <a href="#" className="block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-stone-900 hover:bg-stone-50">{t.navHome}</a>
+            <a href="#shop" className="block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-stone-900 hover:bg-stone-50">{t.navShop}</a>
+            <a href="#about" className="block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-stone-900 hover:bg-stone-50">{t.navAbout}</a>
+            <button 
+              onClick={toggleLang}
+              className="mt-4 flex w-full items-center justify-center space-x-2 bg-stone-100 px-3 py-2 rounded-md text-stone-800 font-medium"
+            >
+              <Globe className="h-5 w-5" />
+              <span>{lang === 'zh' ? 'Switch to English' : '切換至繁體中文'}</span>
+            </button>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <div className="relative bg-stone-900 text-white">
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&q=80&w=2000" 
+            alt="Hero Background" 
+            className="w-full h-full object-cover opacity-40"
+          />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-6">
+            {t.heroTitle}
+          </h1>
+          <p className="text-lg md:text-xl max-w-2xl text-stone-200 mb-10">
+            {t.heroSub}
+          </p>
+          <a href="#shop" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-stone-900 bg-white hover:bg-stone-100 transition-colors shadow-sm">
+            {t.navShop}
+            <ChevronRight className="ml-2 h-5 w-5" />
+          </a>
+        </div>
+      </div>
+
+      {/* Trust / SEO Banner */}
+      <div className="bg-amber-50 border-y border-amber-200">
+        <div className="max-w-6xl mx-auto px-4 py-3 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm text-amber-800 font-medium flex items-center justify-center">
+            <span className="mr-2">✨</span>
+            {t.seoNote}
+          </p>
+        </div>
+      </div>
+
+      {/* Product Grid Section */}
+      <main id="shop" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex justify-between items-end mb-8">
+          <h2 className="text-3xl font-serif font-bold text-stone-800">{t.navShop}</h2>
+          <span className="text-sm text-neutral-500">{products.length} Items</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
+          {products.map((product) => (
+            <div key={product.id} className="group flex flex-col relative">
+              {/* Image Container */}
+              <div className="relative w-full aspect-square bg-neutral-200 rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-shadow">
+                <img
+                  src={product.img}
+                  alt={product[lang].name}
+                  className={`w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 ${!product.isReal ? 'grayscale opacity-70' : ''}`}
+                />
+                
+                {/* Badge */}
+                <div className="absolute top-2 left-2">
+                  {product.isReal ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-900 text-white">
+                      {t.realBadge}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-200 text-neutral-600">
+                      {t.mockBadge}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="mt-4 flex-grow flex flex-col">
+                <p className="text-xs text-stone-500 mb-1 tracking-wider uppercase">{product[lang].category}</p>
+                <h3 className="text-lg font-medium text-stone-900 leading-snug mb-1">
+                  {product[lang].name}
+                </h3>
+                {product.isReal && (
+                  <p className="text-base font-semibold text-stone-800 mt-auto mb-4">
+                    {t.pricePrefix}{product.price.toLocaleString()}
+                  </p>
+                )}
+
+                {/* Call to Action Button */}
+                {product.isReal ? (
+                  <a
+                    href={product.shopeeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded text-white bg-orange-500 hover:bg-orange-600 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                  >
+                    {t.buyOnShopee}
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </a>
+                ) : (
+                  <button
+                    disabled
+                    className="mt-auto w-full inline-flex justify-center items-center px-4 py-2.5 border border-neutral-300 text-sm font-medium rounded text-neutral-400 bg-neutral-50 cursor-not-allowed"
+                  >
+                    {t.mockBadge}
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer id="about" className="bg-stone-900 mt-auto border-t border-stone-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-stone-400">
+            <div>
+              <div className="flex items-center text-white mb-4">
+                <ShoppingBag className="h-5 w-5 mr-2" />
+                <span className="font-bold text-lg tracking-wider">CRAFTED</span>
+              </div>
+              <p className="text-sm leading-relaxed">
+                {lang === 'zh' 
+                  ? '我們致力於尋找世界各地充滿溫度的手工藝品。目前官網建置中，商品皆透過蝦皮購物提供安心的金流與物流服務。' 
+                  : 'Curating handcrafted goods with warmth from around the world. Secure checkout is currently processed via our official Shopee store.'}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-medium mb-4">{t.navShop}</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '陶瓷茶具' : 'Teaware'}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '職人餐具' : 'Tableware'}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '居家家飾' : 'Home Decor'}</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-medium mb-4">{lang === 'zh' ? '顧客服務' : 'Customer Service'}</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '購物須知' : 'Shopping Guide'}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '退換貨政策' : 'Returns Policy'}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{lang === 'zh' ? '聯絡我們' : 'Contact Us'}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-12 pt-8 border-t border-stone-800 text-sm text-center">
+            <p>{t.footerText}</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
